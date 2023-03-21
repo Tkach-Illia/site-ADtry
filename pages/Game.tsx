@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import Image from "next/image";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Cell {
   value: number;
@@ -10,11 +10,11 @@ interface Cell {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-function Profile() {
+export default function Game(): React.ReactElement {
   const [grid, setGrid] = useState<Cell[][]>(
     Array.from(Array(10), () => new Array(10).fill({ value: 0, symbol: "b" }))
   );
-  const [myColor, setMyColor] = useState<string>("g");
+  const [myColor, setMyColor] = useState<string>("r");
   const [turn, setTurn] = useState<string>("g");
 
   const { data, error } = useSWR(`/api/hello`, fetcher, {
@@ -106,8 +106,4 @@ function Profile() {
         ))}
     </div>
   );
-}
-
-export default function Home1() {
-  return <Profile />;
 }
