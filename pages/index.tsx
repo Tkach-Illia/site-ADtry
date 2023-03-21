@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Game from "@/components/Game";
+import Home1 from "@/components/Fetcher";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
         <title>Site</title>
       </Head>
       <main className={styles.main}>
+        <Home1 />
         <Game />
       </main>
     </>
