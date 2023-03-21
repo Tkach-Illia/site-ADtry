@@ -97,9 +97,6 @@ const Game: React.FC = () => {
               ) : (
                 <div style={{ fontSize: "20px" }}>{cell.value}</div>
               )}
-              <div style={{ fontSize: "12px", marginTop: "2px" }}>
-                {cell.symbol}
-              </div>
             </div>
           ))}
         </div>
