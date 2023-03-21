@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import Image from "next/image";
 import axios from "axios";
+import { useEffect, useState } from 'react';
 
 interface Cell {
     value: number;
@@ -9,8 +10,19 @@ interface Cell {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-function Profile({ userId }: { userId: string }) {
-  const { data, error } = useSWR(`/api/hello`, fetcher);
+function Profile() {
+  const [grid, setGrid] = useState<Cell[][]>(
+    Array.from(Array(5), () => new Array(5).fill({ value: 0, symbol: "w" }))
+  );
+
+  const { data, error } = useSWR(`/api/hello`, fetcher, { refreshInterval: 500 });
+  
+  useEffect(()=>{
+    if(data){
+      setGrid(data.grid);
+    }
+  },[data]);
+  
 
   if (error) return <div>Failed to load user</div>;
   if (!data) return <div>Loading...</div>;
@@ -24,19 +36,23 @@ function Profile({ userId }: { userId: string }) {
     }
   };
 
-  const handleCellClick = (rowIndex: number, colIndex: number) => {
-    updateUser(rowIndex, colIndex, 'g');
+  const handleCellClick = async (rowIndex: number, colIndex: number) => {
+    const updatedData = await updateUser(rowIndex, colIndex, 'g');
+    setGrid(updatedData.grid);
   };
-  const handleContextMenu = (
+  const handleContextMenu = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     rowIndex: number,
     colIndex: number
   ) => {
     
+    const updatedData = await updateUser(rowIndex, colIndex, 'r');
+    setGrid(updatedData.grid);
     event.preventDefault();
   };
   return (
-    <div>{data.grid.map((row: Cell[], rowIndex: number) => (
+    <div>
+      {Array.isArray(grid) && grid.map((row, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex" }}>
           {row.map((cell, colIndex) => (
             <div
@@ -73,8 +89,9 @@ function Profile({ userId }: { userId: string }) {
       ))}
     </div>
   );
-}
+};
+
 
 export default function Home1() {
-  return <Profile userId="1" />;
+  return <Profile />;
 }
