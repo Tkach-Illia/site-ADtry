@@ -51,20 +51,24 @@ const Game: React.FC = () => {
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     const newGrid = [...grid];
     newGrid[rowIndex][colIndex] = {
-      symbol: 'r',
+      symbol: "r",
       value: newGrid[rowIndex][colIndex].value + 1,
     };
     setGrid(newGrid);
   };
-  const handleContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent> ,rowIndex: number, colIndex: number) => {
+  const handleContextMenu = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    rowIndex: number,
+    colIndex: number
+  ) => {
     const newGrid = [...grid];
     newGrid[rowIndex][colIndex] = {
-      symbol: 'g',
+      symbol: "g",
       value: newGrid[rowIndex][colIndex].value + 1,
     };
     setGrid(newGrid);
     event.preventDefault();
-  }
+  };
 
   return (
     <div>
@@ -82,10 +86,12 @@ const Game: React.FC = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                userSelect: 'none'
+                userSelect: "none",
               }}
               onClick={() => handleCellClick(rowIndex, colIndex)}
-              onContextMenu={(event) =>handleContextMenu(event, rowIndex, colIndex)}
+              onContextMenu={(event) =>
+                handleContextMenu(event, rowIndex, colIndex)
+              }
             >
               {cell.value <= 3 ? (
                 <Image
