@@ -18,7 +18,7 @@ export default function Game(): React.ReactElement {
   const [myColor, setMyColor] = useState<string>("r");
   const [turn, setTurn] = useState<string>("g");
 
-  const { data, error } = useSWR(`/api/hello`, fetcher, {
+  const { data, error } = useSWR(`/api/grid`, fetcher, {
     refreshInterval: 500,
   });
 
@@ -38,7 +38,7 @@ export default function Game(): React.ReactElement {
     symbol: string
   ) => {
     try {
-      const response = await axios.put(`/api/hello`, {
+      const response = await axios.put(`/api/grid`, {
         rowIndex: rowIndex,
         colIndex: colIndex,
         symbol: symbol,
@@ -51,7 +51,7 @@ export default function Game(): React.ReactElement {
 
   const restartGame = async () => {
     try {
-      const response = await axios.put(`/api/hello`, {
+      const response = await axios.put(`/api/grid`, {
         rowIndex: 0,
         colIndex: 0,
         symbol: "rr",
