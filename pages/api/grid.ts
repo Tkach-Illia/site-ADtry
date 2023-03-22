@@ -22,7 +22,7 @@ function fillArr() {
     for (let colIndex = 4; colIndex < size - 2; colIndex++)
       arr[rowIndex][colIndex] = {
         symbol: "w",
-        value: arr[rowIndex][colIndex].value,
+        value: 0,
       };
   arr[5][5] = {
     symbol: "g",

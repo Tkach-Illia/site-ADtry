@@ -65,7 +65,6 @@ export default function Game(): React.ReactElement {
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
     if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
       const updatedData = await updateUser(rowIndex, colIndex, myColor);
-      console.log(updatedData);
       setTurn("");
       setGrid(updatedData.grid);
     }
@@ -102,7 +101,6 @@ export default function Game(): React.ReactElement {
             }}
             onClick={() => {
               setMyColor(color);
-              console.log(color);
             }}
           >
             {color}
