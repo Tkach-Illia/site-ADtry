@@ -14,6 +14,7 @@ export default function Game(): React.ReactElement {
   const [grid, setGrid] = useState<Cell[][]>(
     Array.from(Array(10), () => new Array(10).fill({ value: 0, symbol: "b" }))
   );
+  const [colors, setColors] = useState<string[]>(["g", "r"]);
   const [myColor, setMyColor] = useState<string>("r");
   const [turn, setTurn] = useState<string>("g");
 
@@ -67,6 +68,24 @@ export default function Game(): React.ReactElement {
   };
   return (
     <div>
+      <div>
+        {colors.map((color, index) => (
+          <div
+            key={index}
+            style={{
+              width: "50px",
+              height: "50px",
+              backgroundColor: "grey",
+            }}
+            onClick={() => {
+              setMyColor(color);
+              console.log(color);
+            }}
+          >
+            {color}
+          </div>
+        ))}
+      </div>
       <div>{turn}</div>
       {Array.isArray(grid) &&
         grid.map((row, rowIndex) => (
