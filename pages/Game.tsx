@@ -49,6 +49,19 @@ export default function Game(): React.ReactElement {
     }
   };
 
+  const restartGame = async () => {
+    try {
+      const response = await axios.put(`/api/hello`, {
+        rowIndex: 0,
+        colIndex: 0,
+        symbol: "rr",
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
     if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
       const updatedData = await updateUser(rowIndex, colIndex, myColor);
@@ -69,6 +82,16 @@ export default function Game(): React.ReactElement {
   return (
     <div>
       <div>
+        <div
+          style={{
+            width: "50px",
+            height: "50px",
+            backgroundColor: "blue",
+          }}
+          onClick={restartGame}
+        >
+          Restart
+        </div>
         {colors.map((color, index) => (
           <div
             key={index}

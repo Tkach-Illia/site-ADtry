@@ -91,11 +91,15 @@ export default function handler(
   if (req.method === "PUT") {
     try {
       const { rowIndex, colIndex, symbol } = req.body;
-      arr[rowIndex][colIndex] = {
-        symbol: symbol,
-        value: arr[rowIndex][colIndex].value + 1,
-      };
-      updateArr();
+      if (symbol != "rr") {
+        arr[rowIndex][colIndex] = {
+          symbol: symbol,
+          value: arr[rowIndex][colIndex].value + 1,
+        };
+        updateArr();
+      } else {
+        fillArr();
+      }
       res.status(200).json({ grid: arr, turn: currentPlayer });
       nextPlayer();
     } catch (error) {
