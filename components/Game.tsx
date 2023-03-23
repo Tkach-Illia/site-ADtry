@@ -63,20 +63,10 @@ export default function Game(): React.ReactElement {
   };
 
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
-    if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
-      const updatedData = await updateUser(rowIndex, colIndex, myColor);
-      setGrid(updatedData.grid);
-    }
-  };
-  const handleContextMenu = async (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    rowIndex: number,
-    colIndex: number
-  ) => {
-    const updatedData = await updateUser(rowIndex, colIndex, "r");
+    const updatedData = await updateUser(rowIndex, colIndex, myColor);
     setGrid(updatedData.grid);
-    event.preventDefault();
   };
+
   return (
     <div>
       <div>
@@ -125,12 +115,11 @@ export default function Game(): React.ReactElement {
                   userSelect: "none",
                 }}
                 onClick={() => {
-                  setTurn("");
-                  handleCellClick(rowIndex, colIndex);
+                  if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
+                    setTurn("");
+                    handleCellClick(rowIndex, colIndex);
+                  }
                 }}
-                onContextMenu={(event) =>
-                  handleContextMenu(event, rowIndex, colIndex)
-                }
               >
                 {cell.value <= 3 ? (
                   <Image
