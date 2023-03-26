@@ -70,6 +70,16 @@ export default function Game(): React.ReactElement {
 
   return (
     <div>
+      <div
+        style={{
+          width: "50px",
+          height: "50px",
+          backgroundColor: "blue",
+        }}
+        onClick={restartGame}
+      >
+        Restart
+      </div>
       <ColorPicker />
       <div>{turn}</div>
       {Array.isArray(grid) &&
