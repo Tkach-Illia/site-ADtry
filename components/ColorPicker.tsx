@@ -1,24 +1,21 @@
+import useSWR from "swr";
+import { fetcher } from "@/fetchers/fetcher";
 import React, { useState, useEffect } from "react";
 
+interface Data {
+  selectedColor: String;
+  setSelectedColor: () => {};
+}
+
 const ColorPicker: React.FC = () => {
-  const [availableColors, setAvailableColors] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`/api/color`);
-        const colors = await response.json();
-        setAvailableColors(colors);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data, error } = useSWR("/api/color", fetcher, {
+    refreshInterval: 500,
+  });
 
   const isColorAvailable = (color: string) => {
-    return availableColors.includes(color);
+    return data?.includes(color);
   };
 
   const onColorSelected = (color: string) => {
@@ -29,10 +26,10 @@ const ColorPicker: React.FC = () => {
 
   return (
     <div>
-      <p>Available colors: {availableColors.join(", ")}</p>
+      <p>Available colors: {data?.join(", ")}</p>
       <p>Selected color: {selectedColor}</p>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        {availableColors.map((color) => (
+        {data?.map((color: string) => (
           <div
             key={color}
             style={{
