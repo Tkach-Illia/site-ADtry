@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import axios from "axios";
 import { fetcher } from "@/fetchers/fetcher";
 import React, { useState, useEffect } from "react";
 
@@ -14,12 +15,25 @@ const ColorPicker: React.FC = () => {
     refreshInterval: 500,
   });
 
+  const updateColors = async (color: string) => {
+    try {
+      const response = await axios.put(`/api/color`, {
+        pickedColor: color,
+        oldColor: selectedColor,
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const isColorAvailable = (color: string) => {
     return data?.includes(color);
   };
 
   const onColorSelected = (color: string) => {
     if (isColorAvailable(color)) {
+      updateColors(color);
       setSelectedColor(color);
     }
   };
