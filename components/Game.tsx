@@ -52,12 +52,11 @@ export default function Game(): React.ReactElement {
 
   const restartGame = async () => {
     try {
-      const response = await axios.put(`/api/grid`, {
+      await axios.put(`/api/grid`, {
         rowIndex: 0,
         colIndex: 0,
         symbol: "rr",
       });
-      return response.data;
     } catch (error) {
       console.error(error);
     }
@@ -80,7 +79,7 @@ export default function Game(): React.ReactElement {
       >
         Restart
       </div>
-      <ColorPicker />
+      <ColorPicker selectedColor={myColor} setSelectedColor={setMyColor} />
       <div>{turn}</div>
       {Array.isArray(grid) &&
         grid.map((row, rowIndex) => (

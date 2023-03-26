@@ -4,13 +4,11 @@ import { fetcher } from "@/fetchers/fetcher";
 import React, { useState, useEffect } from "react";
 
 interface Data {
-  selectedColor: String;
-  setSelectedColor: () => {};
+  selectedColor: string;
+  setSelectedColor: (color: string) => void;
 }
 
-const ColorPicker: React.FC = () => {
-  const [selectedColor, setSelectedColor] = useState("");
-
+const ColorPicker: React.FC<Data> = ({ selectedColor, setSelectedColor }) => {
   const { data, error } = useSWR("/api/color", fetcher, {
     refreshInterval: 500,
   });
