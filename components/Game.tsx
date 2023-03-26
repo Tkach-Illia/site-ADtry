@@ -2,6 +2,7 @@ import useSWR from "swr";
 import Image from "next/image";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ColorPicker from "./ColorPicker";
 
 interface Cell {
   value: number;
@@ -69,33 +70,7 @@ export default function Game(): React.ReactElement {
 
   return (
     <div>
-      <div>
-        <div
-          style={{
-            width: "50px",
-            height: "50px",
-            backgroundColor: "blue",
-          }}
-          onClick={restartGame}
-        >
-          Restart
-        </div>
-        {colors.map((color, index) => (
-          <div
-            key={index}
-            style={{
-              width: "50px",
-              height: "50px",
-              backgroundColor: "grey",
-            }}
-            onClick={() => {
-              setMyColor(color);
-            }}
-          >
-            {color}
-          </div>
-        ))}
-      </div>
+      <ColorPicker />
       <div>{turn}</div>
       {Array.isArray(grid) &&
         grid.map((row, rowIndex) => (
@@ -115,7 +90,10 @@ export default function Game(): React.ReactElement {
                   userSelect: "none",
                 }}
                 onClick={() => {
-                  if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
+                  if (
+                    myColor === turn &&
+                    myColor === grid[rowIndex][colIndex].symbol
+                  ) {
                     setTurn("");
                     handleCellClick(rowIndex, colIndex);
                   }
