@@ -1,3 +1,4 @@
+import { Colors } from "@/consts/Colors";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -11,7 +12,7 @@ interface Cell {
 }
 
 let size = 10;
-let playerQueue = ["g", "r"];
+let playerQueue = Colors;
 let currentPlayer: string | undefined = "g";
 let arr = Array.from(Array(size), () =>
   new Array(size).fill({ value: 0, symbol: "b" })
@@ -25,11 +26,11 @@ function fillArr() {
         value: 0,
       };
   arr[5][5] = {
-    symbol: "g",
+    symbol: "green",
     value: 1,
   };
   arr[6][6] = {
-    symbol: "r",
+    symbol: "red",
     value: 1,
   };
 }
