@@ -1,10 +1,11 @@
+import { Colors } from "@/consts/Colors";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = String[];
+let aviableColors = Colors;
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<typeof Colors>
 ) {
-  res.status(200).json(["red", "green"]);
+  res.status(200).json(aviableColors);
 }
