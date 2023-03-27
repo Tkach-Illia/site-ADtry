@@ -62,7 +62,30 @@ export default function Game(): React.ReactElement {
     const updatedData = await updateUser(rowIndex, colIndex, myColor);
     setGrid(updatedData.grid);
   };
-
+  if (data.status == "end") {
+    return (
+      <div>
+        Game ended...
+        <div
+          style={{
+            width: "80px",
+            height: "30px",
+            backgroundColor: "#1E90FF",
+            borderRadius: "4px",
+            color: "#fff",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            fontWeight: 500,
+          }}
+          onClick={restartGame}
+        >
+          Restart
+        </div>
+      </div>
+    );
+  }
   return (
     <div>
       <div

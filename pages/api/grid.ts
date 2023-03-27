@@ -2,6 +2,7 @@ import { Colors } from "@/consts/Colors";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
+  status: string;
   grid: Cell[][];
   turn: string | undefined;
 };
@@ -11,7 +12,7 @@ interface Cell {
   symbol: string;
 }
 
-let status = "normal";
+let status = "started";
 let size = 10;
 let playerQueue = Colors;
 let currentPlayer: string | undefined = Colors[0];
@@ -42,6 +43,17 @@ function nextPlayer() {
   if (currentPlayer) playerQueue.push(currentPlayer);
 }
 nextPlayer();
+
+function endCheck(grid: Cell[][]) {
+  const uniqueStrings = new Set<string>();
+  grid.forEach((pairArray) => {
+    pairArray.forEach((pair) => {
+      const { value, symbol } = pair;
+      uniqueStrings.add(symbol);
+    });
+  });
+  if (uniqueStrings.size == 3) status = "end";
+}
 
 function updateArr() {
   const newGrid = [...arr];
@@ -84,6 +96,7 @@ function updateArr() {
         };
       }
   arr = newGrid;
+  endCheck(arr);
 }
 
 export default function handler(
@@ -108,8 +121,9 @@ export default function handler(
       break;
     case "DELETE":
       fillArr();
+      status = "started";
       break;
   }
   updateArr();
-  res.status(200).json({ grid: arr, turn: currentPlayer });
+  res.status(200).json({ status: status, grid: arr, turn: currentPlayer });
 }
