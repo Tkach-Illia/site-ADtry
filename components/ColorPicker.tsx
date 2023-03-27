@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import axios from "axios";
 import { fetcher } from "@/fetchers/fetcher";
-import React, { useState, useEffect } from "react";
 
 interface Data {
   selectedColor: string | undefined;
@@ -41,9 +40,9 @@ const ColorPicker: React.FC<Data> = ({ selectedColor, setSelectedColor }) => {
       <p>Available colors: {data?.join(", ")}</p>
       <p>Selected color: {selectedColor}</p>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        {data?.map((color: string) => (
+        {data?.map((color: string, index: number) => (
           <div
-            key={color}
+            key={index}
             style={{
               backgroundColor: color,
               width: "30px",
@@ -53,7 +52,7 @@ const ColorPicker: React.FC<Data> = ({ selectedColor, setSelectedColor }) => {
               opacity: isColorAvailable(color) ? 1 : 0.5,
             }}
             onClick={() => onColorSelected(color)}
-          ></div>
+          />
         ))}
       </div>
     </div>
