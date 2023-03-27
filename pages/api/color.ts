@@ -7,18 +7,28 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<typeof Colors>
 ) {
-  if (req.method === "PUT") {
-    try {
-      const { pickedColor, oldColor } = req.body;
-      aviableColors = aviableColors.filter((item) => item !== pickedColor);
-      if (oldColor) {
-        aviableColors.push(oldColor);
+  switch (req.method) {
+    case "PUT":
+      try {
+        const { pickedColor, oldColor } = req.body;
+        aviableColors = aviableColors.filter((item) => item !== pickedColor);
+        if (oldColor) {
+          aviableColors.push(oldColor);
+        }
+      } catch {
+        console.log("color.ts");
       }
-      res.status(200).json(aviableColors);
-    } catch {
-      console.log("color.ts");
-    }
-  } else {
-    res.status(200).json(aviableColors);
+      break;
+    case "DELETE":
+      try {
+        console.log(aviableColors, 1);
+        aviableColors = Colors;
+        console.log(aviableColors, 2);
+      } catch {
+        console.log("color.ts");
+      }
+
+      break;
   }
+  res.status(200).json(aviableColors);
 }

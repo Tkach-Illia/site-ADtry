@@ -89,25 +89,26 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  if (req.method === "PUT") {
-    try {
-      const { rowIndex, colIndex, symbol } = req.body;
-      if (symbol != "rr") {
-        arr[rowIndex][colIndex] = {
-          symbol: symbol,
-          value: arr[rowIndex][colIndex].value + 1,
-        };
-        updateArr();
-      } else {
-        fillArr();
+  switch (req.method) {
+    case "PUT":
+      try {
+        const { rowIndex, colIndex, symbol } = req.body;
+        if (symbol) {
+          arr[rowIndex][colIndex] = {
+            symbol: symbol,
+            value: arr[rowIndex][colIndex].value + 1,
+          };
+          updateArr();
+          nextPlayer();
+        }
+      } catch (error) {
+        console.error(error);
       }
-      res.status(200).json({ grid: arr, turn: currentPlayer });
-      nextPlayer();
-    } catch (error) {
-      console.error(error);
-    }
-  } else {
-    updateArr();
-    res.status(200).json({ grid: arr, turn: currentPlayer });
+      break;
+    case "DELETE":
+      fillArr();
+      break;
   }
+  updateArr();
+  res.status(200).json({ grid: arr, turn: currentPlayer });
 }
