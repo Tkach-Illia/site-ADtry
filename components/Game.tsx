@@ -3,13 +3,12 @@ import Image from "next/image";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ColorPicker from "./ColorPicker";
+import { fetcher } from "@/fetchers/fetcher";
 
 interface Cell {
   value: number;
   symbol: string;
 }
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Game(): React.ReactElement {
   const [grid, setGrid] = useState<Cell[][]>(
@@ -53,6 +52,7 @@ export default function Game(): React.ReactElement {
     try {
       await axios.delete(`/api/grid`);
       await axios.delete(`/api/color`);
+      setMyColor("");
     } catch (error) {
       console.error(error);
     }

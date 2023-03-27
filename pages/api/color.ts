@@ -21,9 +21,7 @@ export default function handler(
       break;
     case "DELETE":
       try {
-        console.log(aviableColors, 1);
         aviableColors = Colors;
-        console.log(aviableColors, 2);
       } catch {
         console.log("color.ts");
       }

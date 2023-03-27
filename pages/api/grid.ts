@@ -11,9 +11,10 @@ interface Cell {
   symbol: string;
 }
 
+let status = "normal";
 let size = 10;
 let playerQueue = Colors;
-let currentPlayer: string | undefined = "g";
+let currentPlayer: string | undefined = Colors[0];
 let arr = Array.from(Array(size), () =>
   new Array(size).fill({ value: 0, symbol: "b" })
 );
