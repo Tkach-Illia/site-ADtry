@@ -4,7 +4,7 @@ import { fetcher } from "@/fetchers/fetcher";
 import React, { useState, useEffect } from "react";
 
 interface Data {
-  selectedColor: string;
+  selectedColor: string | undefined;
   setSelectedColor: (color: string) => void;
 }
 

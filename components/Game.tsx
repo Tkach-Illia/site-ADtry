@@ -15,9 +15,8 @@ export default function Game(): React.ReactElement {
   const [grid, setGrid] = useState<Cell[][]>(
     Array.from(Array(10), () => new Array(10).fill({ value: 0, symbol: "b" }))
   );
-  const [colors, setColors] = useState<string[]>(["g", "r"]);
-  const [myColor, setMyColor] = useState<string>("r");
-  const [turn, setTurn] = useState<string>("g");
+  const [myColor, setMyColor] = useState<string>();
+  const [turn, setTurn] = useState<string>();
 
   const { data, error } = useSWR(`/api/grid`, fetcher, {
     refreshInterval: 500,
@@ -36,7 +35,7 @@ export default function Game(): React.ReactElement {
   const updateUser = async (
     rowIndex: number,
     colIndex: number,
-    symbol: string
+    symbol: string | undefined
   ) => {
     try {
       const response = await axios.put(`/api/grid`, {
@@ -52,11 +51,8 @@ export default function Game(): React.ReactElement {
 
   const restartGame = async () => {
     try {
-      await axios.put(`/api/grid`, {
-        rowIndex: 0,
-        colIndex: 0,
-        symbol: "rr",
-      });
+      await axios.delete(`/api/grid`);
+      await axios.delete(`/api/color`);
     } catch (error) {
       console.error(error);
     }
@@ -71,9 +67,16 @@ export default function Game(): React.ReactElement {
     <div>
       <div
         style={{
-          width: "50px",
-          height: "50px",
-          backgroundColor: "blue",
+          width: "80px",
+          height: "30px",
+          backgroundColor: "#1E90FF",
+          borderRadius: "4px",
+          color: "#fff",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          fontWeight: 500,
         }}
         onClick={restartGame}
       >
