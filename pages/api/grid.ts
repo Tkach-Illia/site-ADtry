@@ -1,5 +1,6 @@
 import { Colors } from "@/consts/Colors";
 import { Statuses } from "@/consts/Statuses";
+import { Cell } from "@/interfaces/Cell";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -7,11 +8,6 @@ type Data = {
   grid: Cell[][];
   turn: string | undefined;
 };
-
-interface Cell {
-  value: number;
-  symbol: string;
-}
 
 let status = Statuses.Ingame;
 let size = 10;

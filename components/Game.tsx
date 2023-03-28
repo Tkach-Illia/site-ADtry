@@ -5,11 +5,9 @@ import React, { useEffect, useState } from "react";
 import ColorPicker from "./ColorPicker";
 import { fetcher } from "@/fetchers/fetcher";
 import { Statuses } from "@/consts/Statuses";
-
-interface Cell {
-  value: number;
-  symbol: string;
-}
+import WaitingRoom from "./WaitingRoom";
+import { Cell } from "@/interfaces/Cell";
+import GameBoard from "./GameBoard";
 
 export default function Game(): React.ReactElement {
   const [grid, setGrid] = useState<Cell[][]>(
@@ -60,8 +58,14 @@ export default function Game(): React.ReactElement {
   };
 
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
-    const updatedData = await updateUser(rowIndex, colIndex, myColor);
-    setGrid(updatedData.grid);
+    if (
+      myColor === turn &&
+      myColor === grid[rowIndex][colIndex].symbol
+    ) {
+      setTurn("");
+      const updatedData = await updateUser(rowIndex, colIndex, myColor);
+      setGrid(updatedData.grid);
+    }
   };
 
   switch (data.status) {
@@ -110,47 +114,15 @@ export default function Game(): React.ReactElement {
           </div>
           <ColorPicker selectedColor={myColor} setSelectedColor={setMyColor} />
           <div>{turn}</div>
-          {Array.isArray(grid) &&
-            grid.map((row, rowIndex) => (
-              <div key={rowIndex} style={{ display: "flex" }}>
-                {row.map((cell, colIndex) => (
-                  <div
-                    key={`${rowIndex}-${colIndex}`}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      backgroundColor: "white",
-                      border: "1px solid black",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      userSelect: "none",
-                    }}
-                    onClick={() => {
-                      if (
-                        myColor === turn &&
-                        myColor === grid[rowIndex][colIndex].symbol
-                      ) {
-                        setTurn("");
-                        handleCellClick(rowIndex, colIndex);
-                      }
-                    }}
-                  >
-                    {cell.value <= 3 ? (
-                      <Image
-                        src={`/${cell.symbol}/number-${cell.value}.png`}
-                        alt={`${cell.value}`}
-                        width={30}
-                        height={30}
-                      />
-                    ) : (
-                      <div style={{ fontSize: "20px" }}>{cell.value}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
+          <GameBoard grid={grid} onClick={handleCellClick} />
+        </div>
+      );
+    case Statuses.Waiting:
+      return(
+        <div>
+          <WaitingRoom players={2} onGameStart={function (): void {
+            throw new Error("Function not implemented.");
+          } } />
         </div>
       );
   }
