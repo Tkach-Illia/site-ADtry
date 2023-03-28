@@ -1,8 +1,9 @@
 import { Colors } from "@/consts/Colors";
+import { Statuses } from "@/consts/Statuses";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  status: string;
+  status: Statuses;
   grid: Cell[][];
   turn: string | undefined;
 };
@@ -12,7 +13,7 @@ interface Cell {
   symbol: string;
 }
 
-let status = "started";
+let status = Statuses.Ingame;
 let size = 10;
 let playerQueue = Colors;
 let currentPlayer: string | undefined = Colors[0];
@@ -52,7 +53,7 @@ function endCheck(grid: Cell[][]) {
       uniqueStrings.add(symbol);
     });
   });
-  if (uniqueStrings.size == 3) status = "end";
+  if (uniqueStrings.size == 3) status = Statuses.Ended;
 }
 
 function updateArr() {
@@ -121,7 +122,7 @@ export default function handler(
       break;
     case "DELETE":
       fillArr();
-      status = "started";
+      status = Statuses.Ingame;
       break;
   }
   updateArr();

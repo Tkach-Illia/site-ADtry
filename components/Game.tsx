@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ColorPicker from "./ColorPicker";
 import { fetcher } from "@/fetchers/fetcher";
+import { Statuses } from "@/consts/Statuses";
 
 interface Cell {
   value: number;
@@ -62,92 +63,96 @@ export default function Game(): React.ReactElement {
     const updatedData = await updateUser(rowIndex, colIndex, myColor);
     setGrid(updatedData.grid);
   };
-  if (data.status == "end") {
-    return (
-      <div>
-        Game ended...
-        <div
-          style={{
-            width: "80px",
-            height: "30px",
-            backgroundColor: "#1E90FF",
-            borderRadius: "4px",
-            color: "#fff",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-            fontWeight: 500,
-          }}
-          onClick={restartGame}
-        >
-          Restart
+
+  switch (data.status) {
+    case Statuses.Ended:
+      return (
+        <div>
+          Game ended...
+          <div
+            style={{
+              width: "80px",
+              height: "30px",
+              backgroundColor: "#1E90FF",
+              borderRadius: "4px",
+              color: "#fff",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              fontWeight: 500,
+            }}
+            onClick={restartGame}
+          >
+            Restart
+          </div>
         </div>
-      </div>
-    );
-  }
-  return (
-    <div>
-      <div
-        style={{
-          width: "80px",
-          height: "30px",
-          backgroundColor: "#1E90FF",
-          borderRadius: "4px",
-          color: "#fff",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          cursor: "pointer",
-          fontWeight: 500,
-        }}
-        onClick={restartGame}
-      >
-        Restart
-      </div>
-      <ColorPicker selectedColor={myColor} setSelectedColor={setMyColor} />
-      <div>{turn}</div>
-      {Array.isArray(grid) &&
-        grid.map((row, rowIndex) => (
-          <div key={rowIndex} style={{ display: "flex" }}>
-            {row.map((cell, colIndex) => (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  backgroundColor: "white",
-                  border: "1px solid black",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  userSelect: "none",
-                }}
-                onClick={() => {
-                  if (
-                    myColor === turn &&
-                    myColor === grid[rowIndex][colIndex].symbol
-                  ) {
-                    setTurn("");
-                    handleCellClick(rowIndex, colIndex);
-                  }
-                }}
-              >
-                {cell.value <= 3 ? (
-                  <Image
-                    src={`/${cell.symbol}/number-${cell.value}.png`}
-                    alt={`${cell.value}`}
-                    width={30}
-                    height={30}
-                  />
-                ) : (
-                  <div style={{ fontSize: "20px" }}>{cell.value}</div>
-                )}
+      );
+    case Statuses.Ingame:
+      return (
+        <div>
+          <div
+            style={{
+              width: "80px",
+              height: "30px",
+              backgroundColor: "#1E90FF",
+              borderRadius: "4px",
+              color: "#fff",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              fontWeight: 500,
+            }}
+            onClick={restartGame}
+          >
+            Restart
+          </div>
+          <ColorPicker selectedColor={myColor} setSelectedColor={setMyColor} />
+          <div>{turn}</div>
+          {Array.isArray(grid) &&
+            grid.map((row, rowIndex) => (
+              <div key={rowIndex} style={{ display: "flex" }}>
+                {row.map((cell, colIndex) => (
+                  <div
+                    key={`${rowIndex}-${colIndex}`}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      backgroundColor: "white",
+                      border: "1px solid black",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      userSelect: "none",
+                    }}
+                    onClick={() => {
+                      if (
+                        myColor === turn &&
+                        myColor === grid[rowIndex][colIndex].symbol
+                      ) {
+                        setTurn("");
+                        handleCellClick(rowIndex, colIndex);
+                      }
+                    }}
+                  >
+                    {cell.value <= 3 ? (
+                      <Image
+                        src={`/${cell.symbol}/number-${cell.value}.png`}
+                        alt={`${cell.value}`}
+                        width={30}
+                        height={30}
+                      />
+                    ) : (
+                      <div style={{ fontSize: "20px" }}>{cell.value}</div>
+                    )}
+                  </div>
+                ))}
               </div>
             ))}
-          </div>
-        ))}
-    </div>
-  );
+        </div>
+      );
+  }
+  return <div>Loading...</div>;
 }
