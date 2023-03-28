@@ -8,23 +8,13 @@ interface Props {
 const WaitingRoom: React.FC<Props> = ({ players, onGameStart }) => {
   const [readyPlayers, setReadyPlayers] = useState(0);
 
-  useEffect(() => {
-    if (readyPlayers === players) {
-      onGameStart();
-    }
-  }, [readyPlayers, players, onGameStart]);
-
-  const handlePlayerReady = () => {
-    setReadyPlayers((prevReadyPlayers) => prevReadyPlayers + 1);
-  };
-
   return (
     <div>
       <h2>Waiting for players...</h2>
       <p>
         {readyPlayers} / {players} players ready
       </p>
-      <button onClick={handlePlayerReady}>Ready</button>
+      <button onClick={onGameStart}>Ready</button>
     </div>
   );
 };

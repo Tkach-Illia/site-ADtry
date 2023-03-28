@@ -36,7 +36,7 @@ export default function Game(): React.ReactElement {
     symbol: string | undefined
   ) => {
     try {
-      const response = await axios.put(`/api/grid`, {
+      const response = await axios.patch(`/api/grid`, {
         rowIndex: rowIndex,
         colIndex: colIndex,
         symbol: symbol,
@@ -62,6 +62,15 @@ export default function Game(): React.ReactElement {
       setTurn("");
       const updatedData = await updateUser(rowIndex, colIndex, myColor);
       setGrid(updatedData.grid);
+    }
+  };
+
+  const onGameStart = () => {
+    try {
+      console.log("123");
+      axios.put(`/api/grid`);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -117,12 +126,7 @@ export default function Game(): React.ReactElement {
     case Statuses.Waiting:
       return (
         <div>
-          <WaitingRoom
-            players={2}
-            onGameStart={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
+          <WaitingRoom players={2} onGameStart={onGameStart} />
         </div>
       );
   }

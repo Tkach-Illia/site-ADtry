@@ -19,8 +19,8 @@ const GameBoard: React.FC<Props> = ({ grid, onClick }) => {
               <div
                 key={`${rowIndex}-${colIndex}`}
                 style={{
-                  width: "50px",
-                  height: "50px",
+                  width: `${cellSize}px`,
+                  height: `${cellSize}px`,
                   backgroundColor: "white",
                   border: "1px solid black",
                   display: "flex",

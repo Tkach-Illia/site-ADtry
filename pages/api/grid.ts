@@ -9,7 +9,7 @@ type Data = {
   turn: string | undefined;
 };
 
-let status = Statuses.Ingame;
+let status = Statuses.Waiting;
 let size = 10;
 let playerQueue = Colors;
 let currentPlayer: string | undefined = Colors[0];
@@ -101,7 +101,7 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   switch (req.method) {
-    case "PUT":
+    case "PATCH":
       try {
         const { rowIndex, colIndex, symbol } = req.body;
         if (symbol) {
@@ -118,6 +118,9 @@ export default function handler(
       break;
     case "DELETE":
       fillArr();
+      status = Statuses.Waiting;
+      break;
+    case "PUT":
       status = Statuses.Ingame;
       break;
   }
