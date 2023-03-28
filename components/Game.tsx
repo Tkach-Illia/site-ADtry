@@ -58,10 +58,7 @@ export default function Game(): React.ReactElement {
   };
 
   const handleCellClick = async (rowIndex: number, colIndex: number) => {
-    if (
-      myColor === turn &&
-      myColor === grid[rowIndex][colIndex].symbol
-    ) {
+    if (myColor === turn && myColor === grid[rowIndex][colIndex].symbol) {
       setTurn("");
       const updatedData = await updateUser(rowIndex, colIndex, myColor);
       setGrid(updatedData.grid);
@@ -118,11 +115,14 @@ export default function Game(): React.ReactElement {
         </div>
       );
     case Statuses.Waiting:
-      return(
+      return (
         <div>
-          <WaitingRoom players={2} onGameStart={function (): void {
-            throw new Error("Function not implemented.");
-          } } />
+          <WaitingRoom
+            players={2}
+            onGameStart={function (): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
         </div>
       );
   }

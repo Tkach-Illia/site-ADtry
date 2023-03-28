@@ -1,4 +1,4 @@
 export interface Cell {
-    value: number;
-    symbol: string;
-  };
+  value: number;
+  symbol: string;
+}
