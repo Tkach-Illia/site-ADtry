@@ -100,6 +100,8 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  console.log(`Your IP address is ${ip}`);
   switch (req.method) {
     case "PATCH":
       try {
